@@ -1,11 +1,12 @@
 const express = require('express');
 const ObjectId = require('mongodb').ObjectId;
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb://127.0.0.1:27017";
 const app = express();
+const port = 8800;
+var db = require('./database');
 
 app.use(express.json());
-var db;
+
 
 app.get('/',(req,res)=>{
     res.send("Welcme");
@@ -14,7 +15,7 @@ app.get('/',(req,res)=>{
 app.get('/api/products',(req,res)=>{
     db.collection('newProduct').find({}).toArray((err,result)=>{  // to convert it into array
         if(err) throw err
-        res.send(result);
+        res.send(resut);
     })
 })
 
@@ -73,10 +74,9 @@ app.post('/api/products/addProduct',(req,res)=>{
     })
 })
 
-app.listen(8800,()=>{
-    MongoClient.connect(uri,{useNewUrlParser:true},(err,result)=>{
-        if(err)console.log("Error in connecting");
-        db = result.db('product');
-        console.log("Connected to DB");
-    })
+app.listen(port,function(err){
+    if (err){
+        console.log(`Error in running the server: ${err}`);
+    }
+    console.log("Server is running on port:",port);
 })
